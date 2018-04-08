@@ -25,19 +25,25 @@
     $conn = new mysqli($servername, $user,$password, $dbname);
     // Check connection
 
-    $sql = "SELECT Id, Nombre, Imagen FROM mapa";
+    $sql = "SELECT mapa.id, mapa.nombre, quejas.tipo, quejas.sexo, quejas.descripcion, quejas.x, quejas.y FROM mapa
+JOIN quejas ON mapa.Id = quejas.idDistrito
+WHERE mapa.nombre='".$_GET['destino']."'";
     $result = $conn->query($sql);
       if ($result->num_rows > 0) {
+          echo "Quejas:";
           while($row = $result->fetch_assoc()) {
-            if ($_GET['destino']==$row["Nombre"]) {
-            echo " Nombre: ". $row["Nombre"]."<br>"."<br>";
-
-            }
-
+            echo "Distrito: ".$row['nombre']."</br>";
+            echo "Tipo: ".$row['tipo']."</br>";
+            echo "Sexo: ".$row['sexo']."</br>";
+            echo "Cordenada X: ".$row['x']."</br>";
+            echo "Cordenada Y: ".$row['y']."</br>";
+            echo "Descripcion: ".$row['descripcion']."</br>";
+            echo "</br>";
           }
         } else {
           echo "0 results";
   }
+  
     $_SESSION['distrito'] = $_GET['destino'];
 
 
